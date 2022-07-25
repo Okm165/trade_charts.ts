@@ -32,7 +32,7 @@ type Rgba = [RedComponent, GreenComponent, BlueComponent, AlphaComponent];
  * @public
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value
  */
-const namedColorRgbHexStrings: Record<string, string> = {
+const namedColorRgbHexStrings = {
   // The order of properties in this Record is not important for the internal logic.
   // It's just GZIPped better when props follows this order.
   // Please add new colors to the end of the record.
@@ -250,7 +250,7 @@ function colorStringToRgba(colorString: string): Rgba {
   colorString = colorString.toLowerCase();
 
   if (colorString in namedColorRgbHexStrings) {
-    colorString = namedColorRgbHexStrings[colorString];
+    colorString = namedColorRgbHexStrings[colorString as keyof typeof namedColorRgbHexStrings];
   }
 
   {

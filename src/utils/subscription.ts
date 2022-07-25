@@ -1,4 +1,10 @@
-import { Callback, ISubscription } from "./isubscription";
+export type Callback<T1 = void, T2 = void> = (param1: T1, param2: T2) => void;
+
+export interface ISubscription<T1 = void, T2 = void> {
+  subscribe(callback: Callback<T1, T2>, linkedObject?: unknown, singleshot?: boolean): void;
+  unsubscribe(callback: Callback<T1, T2>): void;
+  unsubscribeAll(linkedObject: unknown): void;
+}
 
 interface Listener<T1, T2> {
   callback: Callback<T1, T2>;
@@ -6,7 +12,7 @@ interface Listener<T1, T2> {
   singleshot: boolean;
 }
 
-export class Delegate<T1 = void, T2 = void> implements ISubscription<T1, T2> {
+export class Subscription<T1 = void, T2 = void> implements ISubscription<T1, T2> {
   private _listeners: Listener<T1, T2>[] = [];
 
   public subscribe(callback: Callback<T1, T2>, linkedObject?: unknown, singleshot?: boolean): void {
