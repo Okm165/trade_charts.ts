@@ -1,0 +1,21 @@
+repos:
+  - repo: local
+    hooks:
+      - id: tsc
+        name: Typescript compiler
+        description: Typescript compiler check.
+        entry: npx tsc -b --verbose .
+        language: system
+        pass_filenames: false
+      - id: eslint
+        name: Typescript linter
+        description: js ts jsx tsx linter.
+        entry: npx eslint --ext .js,.ts,.tsx,.jsx .
+        language: system
+        pass_filenames: false
+      - id: prettier
+        name: Typescript formatter
+        description: Formatter.
+        entry: npx prettier --config ./.prettierrc.json --loglevel log -wu .
+        language: system
+        pass_filenames: false

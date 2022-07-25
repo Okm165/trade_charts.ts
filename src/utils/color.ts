@@ -1,4 +1,4 @@
-import { Nominal } from "./nominal";
+import { Nominal } from "../models/nominal";
 
 /**
  * Red component of the RGB color value
@@ -206,7 +206,8 @@ function normalizeAlphaComponent(component: AlphaComponent): AlphaComponent {
         ? (1 as AlphaComponent)
         : // limit the precision of all numbers to at most 4 digits in fractional part
           Math.round(component * 10000) / 10000
-    ) /* eslint-enable indent */ as AlphaComponent
+    ) as AlphaComponent
+    /* eslint-enable indent */
   );
 }
 
