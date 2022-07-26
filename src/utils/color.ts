@@ -4,27 +4,27 @@ import { Nominal } from "../models/nominal";
  * Red component of the RGB color value
  * The valid values are integers in range [0, 255]
  */
-type RedComponent = Nominal<number, "RedComponent">;
+export type RedComponent = Nominal<number, "RedComponent">;
 
 /**
  * Green component of the RGB color value
  * The valid values are integers in range [0, 255]
  */
-type GreenComponent = Nominal<number, "GreenComponent">;
+export type GreenComponent = Nominal<number, "GreenComponent">;
 
 /**
  * Blue component of the RGB color value
  * The valid values are integers in range [0, 255]
  */
-type BlueComponent = Nominal<number, "BlueComponent">;
+export type BlueComponent = Nominal<number, "BlueComponent">;
 
 /**
  * Alpha component of the RGBA color value
  * The valid values are integers in range [0, 1]
  */
-type AlphaComponent = Nominal<number, "AlphaComponent">;
+export type AlphaComponent = Nominal<number, "AlphaComponent">;
 
-type Rgba = [RedComponent, GreenComponent, BlueComponent, AlphaComponent];
+export type RGBA = [RedComponent, GreenComponent, BlueComponent, AlphaComponent];
 
 /**
  * Note this object should be explicitly marked as public so that dts-bundle-generator does not mangle the property names.
@@ -183,7 +183,7 @@ const namedColorRgbHexStrings = {
   mediumspringgreen: "#00fa9a",
 };
 
-function normalizeRgbComponent<T extends RedComponent | GreenComponent | BlueComponent>(component: number): T {
+export function normalizeRgbComponent<T extends RedComponent | GreenComponent | BlueComponent>(component: number): T {
   if (component < 0) {
     return 0 as T;
   }
@@ -194,21 +194,14 @@ function normalizeRgbComponent<T extends RedComponent | GreenComponent | BlueCom
   return (Math.round(component) || 0) as T;
 }
 
-function normalizeAlphaComponent(component: AlphaComponent): AlphaComponent {
-  return (
-    /* eslint-disable indent */
-    (
-      !(component <= 0) && !(component > 0)
-        ? (0 as AlphaComponent)
-        : component < 0
-        ? (0 as AlphaComponent)
-        : component > 1
-        ? (1 as AlphaComponent)
-        : // limit the precision of all numbers to at most 4 digits in fractional part
-          Math.round(component * 10000) / 10000
-    ) as AlphaComponent
-    /* eslint-enable indent */
-  );
+export function normalizeAlphaComponent(component: AlphaComponent): AlphaComponent {
+  if (component <= 0) {
+    return 0 as AlphaComponent;
+  }
+  if (component > 1) {
+    return 1 as AlphaComponent;
+  }
+  return (Math.round(component * 10000) / 10000) as AlphaComponent;
 }
 
 /**
@@ -217,7 +210,7 @@ function normalizeAlphaComponent(component: AlphaComponent): AlphaComponent {
  * @example
  * #f0f
  * @example
- * #f0fa
+ * #ffa
  */
 const shortHexRe = /^#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])?$/i;
 
@@ -247,7 +240,7 @@ const rgbRe = /^rgb\(\s*(-?\d{1,10})\s*,\s*(-?\d{1,10})\s*,\s*(-?\d{1,10})\s*\)$
  */
 const rgbaRe = /^rgba\(\s*(-?\d{1,10})\s*,\s*(-?\d{1,10})\s*,\s*(-?\d{1,10})\s*,\s*(-?[\d]{0,10}(?:\.\d+)?)\s*\)$/;
 
-function colorStringToRgba(colorString: string): Rgba {
+export function colorStringToRgba(colorString: string): RGBA {
   colorString = colorString.toLowerCase();
 
   if (colorString in namedColorRgbHexStrings) {
@@ -261,7 +254,7 @@ function colorStringToRgba(colorString: string): Rgba {
         normalizeRgbComponent<RedComponent>(parseInt(matches[1], 10)),
         normalizeRgbComponent<GreenComponent>(parseInt(matches[2], 10)),
         normalizeRgbComponent<BlueComponent>(parseInt(matches[3], 10)),
-        normalizeAlphaComponent((matches.length < 5 ? 1 : parseFloat(matches[4])) as AlphaComponent),
+        normalizeAlphaComponent((matches[4] === undefined ? 1 : parseFloat(matches[4])) as AlphaComponent),
       ];
     }
   }
@@ -273,7 +266,7 @@ function colorStringToRgba(colorString: string): Rgba {
         normalizeRgbComponent<RedComponent>(parseInt(matches[1], 16)),
         normalizeRgbComponent<GreenComponent>(parseInt(matches[2], 16)),
         normalizeRgbComponent<BlueComponent>(parseInt(matches[3], 16)),
-        1 as AlphaComponent,
+        normalizeAlphaComponent((matches[4] === undefined ? 1 : parseInt(matches[4], 16) / 255) as AlphaComponent),
       ];
     }
   }
@@ -285,7 +278,9 @@ function colorStringToRgba(colorString: string): Rgba {
         normalizeRgbComponent<RedComponent>(parseInt(matches[1], 16) * 0x11),
         normalizeRgbComponent<GreenComponent>(parseInt(matches[2], 16) * 0x11),
         normalizeRgbComponent<BlueComponent>(parseInt(matches[3], 16) * 0x11),
-        1 as AlphaComponent,
+        normalizeAlphaComponent(
+          (matches[4] === undefined ? 1 : (parseInt(matches[4], 16) * 0x11) / 255) as AlphaComponent
+        ),
       ];
     }
   }
@@ -293,7 +288,7 @@ function colorStringToRgba(colorString: string): Rgba {
   throw new Error(`Cannot parse color: ${colorString}`);
 }
 
-function rgbaToGrayscale(rgbValue: Rgba): number {
+export function rgbaToGrayscale(rgbaValue: RGBA): number {
   // Originally, the NTSC RGB to YUV formula
   // perfected by @eugene-korobko's black magic
   const redComponentGrayscaleWeight = 0.199;
@@ -301,9 +296,9 @@ function rgbaToGrayscale(rgbValue: Rgba): number {
   const blueComponentGrayscaleWeight = 0.114;
 
   return (
-    redComponentGrayscaleWeight * rgbValue[0] +
-    greenComponentGrayscaleWeight * rgbValue[1] +
-    blueComponentGrayscaleWeight * rgbValue[2]
+    redComponentGrayscaleWeight * rgbaValue[0] +
+    greenComponentGrayscaleWeight * rgbaValue[1] +
+    blueComponentGrayscaleWeight * rgbaValue[2]
   );
 }
 
@@ -315,7 +310,9 @@ export function applyAlpha(color: string, alpha: number): string {
 
   const originRgba = colorStringToRgba(color);
   const originAlpha = originRgba[3];
-  return `rgba(${originRgba[0]}, ${originRgba[1]}, ${originRgba[2]}, ${alpha * originAlpha})`;
+  return `rgba(${originRgba[0]}, ${originRgba[1]}, ${originRgba[2]}, ${normalizeAlphaComponent(
+    (alpha * originAlpha) as AlphaComponent
+  )})`;
 }
 
 export interface ContrastColors {
@@ -336,7 +333,7 @@ export function gradientColorAtPercent(topColor: string, bottomColor: string, pe
   const [topR, topG, topB, topA] = colorStringToRgba(topColor);
   const [bottomR, bottomG, bottomB, bottomA] = colorStringToRgba(bottomColor);
 
-  const resultRgba: Rgba = [
+  const resultRgba: RGBA = [
     normalizeRgbComponent((topR + percent * (bottomR - topR)) as RedComponent),
     normalizeRgbComponent((topG + percent * (bottomG - topG)) as GreenComponent),
     normalizeRgbComponent((topB + percent * (bottomB - topB)) as BlueComponent),

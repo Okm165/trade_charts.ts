@@ -19,3 +19,9 @@ repos:
         entry: npx prettier --config ./.prettierrc.json --loglevel log -wu .
         language: system
         pass_filenames: false
+      - id: jest
+        name: Typescript tester
+        description: Tester.
+        entry: npm run test
+        language: system
+        pass_filenames: false
