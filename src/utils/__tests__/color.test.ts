@@ -9,7 +9,7 @@ import {
   rgbaToGrayscale,
 } from "../color";
 
-describe("color exported functions testing", () => {
+describe("color functions testing", () => {
   test("colorStringToRgba with typing", () => {
     expect(colorStringToRgba("#fb0")).toEqual<RGBA>([
       255 as RedComponent,
@@ -39,7 +39,7 @@ describe("color exported functions testing", () => {
     expect(colorStringToRgba("rgb(552,11,-123)")).toEqual([255, 11, 0, 1]);
   });
 
-  test("colorStringToRgba from hex", () => {
+  test("colorStringToRgba from rgba", () => {
     expect(colorStringToRgba("rgba(123, 234, 45, 1)")).toEqual([123, 234, 45, 1]);
     expect(colorStringToRgba("rgba(255,234,245,0.1)")).toEqual([255, 234, 245, 0.1]);
     expect(colorStringToRgba("rgba(5312,11,245,5)")).toEqual([255, 11, 245, 1]);

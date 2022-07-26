@@ -22,6 +22,6 @@ repos:
       - id: jest
         name: Typescript tester
         description: Tester.
-        entry: npm run test
+        entry: npx run test
         language: system
         pass_filenames: false

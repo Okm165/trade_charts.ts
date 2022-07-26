@@ -1,6 +1,6 @@
 import { DateFormatter } from "formatters/dateFormatter";
 
-describe("dateFormatter testing", () => {
+describe("DateFormatter testing", () => {
   test("date conversions", () => {
     expect(new DateFormatter().format(new Date("December 17, 1995 03:24:00"))).toEqual("1995-12-17");
     expect(new DateFormatter().format(new Date("November 1, 1995 03:24:00"))).toEqual("1995-11-01");

@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "jest",
+    "t": "jest --verbose",
     "p": "prettier -w .",
     "e": "eslint --ext js,ts,jsx,tsx .",
     "c": "tsc -b --verbose ."

@@ -1,7 +1,7 @@
 import { PercentageFormatter } from "formatters/percentageFormatter";
 
-describe("dateFormatter testing", () => {
-  test("date conversions", () => {
+describe("PercentageFormatter testing", () => {
+  test("percantage conversions", () => {
     expect(new PercentageFormatter().format(12)).toEqual("12.00%");
     expect(new PercentageFormatter().format(91.234)).toEqual("91.23%");
     expect(new PercentageFormatter().format(23.24)).toEqual("23.24%");

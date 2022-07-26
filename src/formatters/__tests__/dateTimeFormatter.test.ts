@@ -1,7 +1,7 @@
 import { DateTimeFormatter } from "formatters/dateTimeFormatter";
 
-describe("dateFormatter testing", () => {
-  test("date conversions", () => {
+describe("DateTimeFormatter testing", () => {
+  test("dateTime conversions", () => {
     expect(new DateTimeFormatter().format(new Date(Date.parse("December 17, 1995 03:24:12 UTC")))).toEqual(
       "1995-12-17 03:24:12"
     );

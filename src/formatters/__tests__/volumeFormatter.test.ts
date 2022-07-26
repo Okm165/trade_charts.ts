@@ -1,7 +1,7 @@
 import { VolumeFormatter } from "formatters/volumeFormatter";
 
-describe("dateFormatter testing", () => {
-  test("date conversions", () => {
+describe("VolumeFormatter testing", () => {
+  test("volume conversions", () => {
     expect(new VolumeFormatter(2).format(12)).toEqual("12");
     expect(new VolumeFormatter(2).format(91.234)).toEqual("91.23");
     expect(new VolumeFormatter(2).format(23.24)).toEqual("23.24");
