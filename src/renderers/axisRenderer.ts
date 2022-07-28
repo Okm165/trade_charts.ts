@@ -1,38 +1,105 @@
 import { ensure } from "utils/check";
 
 export abstract class AxisRenderer {
-  public readonly _cnv: HTMLCanvasElement;
-  public _ctx: CanvasRenderingContext2D;
+  public readonly cnv: HTMLCanvasElement;
+  public readonly ctx: CanvasRenderingContext2D;
 
-  constructor(cnv: HTMLCanvasElement) {
-    this._cnv = cnv;
-    this._ctx = ensure(this._cnv.getContext("2d"));
+  constructor(root: Element) {
+    this.cnv = this.dom(root);
+    this.ctx = ensure(this.cnv.getContext("2d"));
   }
-
-  public abstract getSize(): DOMRect;
-
+  public abstract dom(root: Element): HTMLCanvasElement;
   public abstract paint(): void;
 
-  public abstract applyDomStyles(cnv: HTMLCanvasElement): void;
+  public getSize(): DOMRect {
+    return this.cnv.getBoundingClientRect();
+  }
 }
 
 export class AxisTopRenderer extends AxisRenderer {
-  constructor(cnv: HTMLCanvasElement) {
-    super(cnv);
-    this.applyDomStyles(this._cnv);
+  constructor(root: Element) {
+    super(root);
   }
 
-  public applyDomStyles(cnv: HTMLCanvasElement) {
+  public dom(root: Element): HTMLCanvasElement {
+    const cnv = document.createElement("canvas");
     cnv.style.display = "initial";
-    cnv.style.width = "100px";
+    cnv.style.width = "100%";
     cnv.style.height = "20px";
-  }
-
-  public getSize(): DOMRect {
-    return this._cnv.getBoundingClientRect();
+    root.appendChild(cnv);
+    return cnv;
   }
 
   public paint() {
-    console.log("paint");
+    this.ctx.save();
+    this.ctx.fillStyle = "blue";
+    this.ctx.fillRect(0, 0, this.cnv.width, this.cnv.height);
+    this.ctx.restore();
+  }
+}
+
+export class AxisRightRenderer extends AxisRenderer {
+  constructor(root: Element) {
+    super(root);
+  }
+
+  public dom(root: Element): HTMLCanvasElement {
+    const cnv = document.createElement("canvas");
+    cnv.style.display = "initial";
+    cnv.style.width = "20px";
+    cnv.style.height = "100%";
+    root.appendChild(cnv);
+    return cnv;
+  }
+
+  public paint() {
+    this.ctx.save();
+    this.ctx.fillStyle = "pink";
+    this.ctx.fillRect(0, 0, this.cnv.width, this.cnv.height);
+    this.ctx.restore();
+  }
+}
+
+export class AxisLeftRenderer extends AxisRenderer {
+  constructor(root: Element) {
+    super(root);
+  }
+
+  public dom(root: Element): HTMLCanvasElement {
+    const cnv = document.createElement("canvas");
+    cnv.style.display = "initial";
+    cnv.style.width = "20px";
+    cnv.style.height = "100%";
+    root.appendChild(cnv);
+    return cnv;
+  }
+
+  public paint() {
+    this.ctx.save();
+    this.ctx.fillStyle = "yellow";
+    this.ctx.fillRect(0, 0, this.cnv.width, this.cnv.height);
+    this.ctx.restore();
+  }
+}
+
+export class AxisBottomRenderer extends AxisRenderer {
+  constructor(root: Element) {
+    super(root);
+  }
+
+  public dom(root: Element): HTMLCanvasElement {
+    const cnv = document.createElement("canvas");
+    cnv.style.display = "initial";
+    cnv.style.width = "100%";
+    cnv.style.height = "20px";
+    root.appendChild(cnv);
+    return cnv;
+  }
+
+  public paint() {
+    this.ctx.save();
+    this.ctx.fillStyle = "red";
+    this.ctx.fillRect(0, 0, this.cnv.width, this.cnv.height);
+    this.ctx.restore();
   }
 }

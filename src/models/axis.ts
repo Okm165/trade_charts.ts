@@ -1,34 +1,26 @@
-import { Dom, DOMSection } from "./dom";
-
 import { AxisRenderer } from "renderers/axisRenderer";
 
 export class Axis<Data, Renderer extends AxisRenderer> {
-  public _from = 0;
-  public _to = 0;
-  public _interval = 0;
-  public readonly _data: Data;
-  public readonly _canvas: HTMLCanvasElement;
-  public readonly _renderer: Renderer;
+  public from = 0;
+  public to = 0;
+  public interval = 0;
+  public readonly data: Data;
+  public readonly cnv: HTMLCanvasElement;
+  public readonly renderer: Renderer;
 
-  constructor(data: Data, dom: Dom, rendererObj: (cnv: HTMLCanvasElement) => Renderer) {
-    this._data = data;
-    this._canvas = dom.append(DOMSection.Top, this.dom);
-    this._renderer = rendererObj(this._canvas);
+  constructor(data: Data, renderer: Renderer) {
+    this.data = data;
+    this.renderer = renderer;
+    this.cnv = this.renderer.cnv;
+    this.renderer.paint();
   }
 
   public setRange(from: number, to: number) {
-    this._from = from;
-    this._to = to;
+    this.from = from;
+    this.to = to;
   }
 
   public setInterval(interval: number) {
-    this._interval = interval;
-  }
-
-  public dom(root: Node): HTMLCanvasElement {
-    const canvas = document.createElement("canvas");
-    canvas.style.display = "none";
-    root.appendChild(canvas);
-    return canvas;
+    this.interval = interval;
   }
 }
