@@ -50,6 +50,19 @@ export function assert(condition: boolean, message?: string): void | never {
 }
 
 /**
+ * Checks if value equal. Throws if the assertion is failed.
+ *
+ * @param val1 - Result of the assertion evaluation
+ * @param val2 - Text to include in the exception message
+ * @param message - Text to include in the exception message
+ */
+export function assertEq<T>(val1: T, val2: T, message?: string): void | never {
+  if (!(val1 == val2)) {
+    throw new Error("Assertion failed" + (message ? ": " + message : ""));
+  }
+}
+
+/**
  * Ensures that value is defined.
  * Throws if the value is undefined, returns the original value otherwise.
  *

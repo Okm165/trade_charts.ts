@@ -1,4 +1,4 @@
-import { Nominal } from "../models/nominal";
+import { Nominal } from "utils/nominal";
 
 /**
  * Red component of the RGB color value
